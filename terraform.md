@@ -59,8 +59,38 @@ This is achieved in 3 state,
     - terraform apply  
       This command will show the execution plan once again and asks user to give a confirmation to proceed for the resource creation
 
+### Types of files
+* main.tf -- Main configuration file containing resource definition
+* variable.tf -- Contains variable declaration
+* outputs.tf -- Contains output from resources
+* provider.tf -- Contains providers definition
+
 ### Hashicorp Configuration Language(HCL) configuration file resources
 ![Screenshot 2022-11-19 at 10 04 29](https://user-images.githubusercontent.com/20988358/202834231-47137da1-ce99-410c-8777-5a83c95c20be.png)
+
+### Block Names
+* resource 
+* variable
+```terraform
+Block example: variables.tf
+variable "fruit" {
+  default = "apple"
+  type = string  # Optional but good to enforce the type of variable to be declared
+  description = "Description about the variables" # Optional but it gives a additional information about variable
+  taste = "sweet"
+}
+
+Usage example: in main configuration file
+fruitName = var.fruit  # gets the default value(apple)
+fruitTaste = var.fruit.taste # gets the 'sweet'
+```
+Variable types
+```
+    
+    
+    
+`
+ * 
 
 ### Providers documentation
 https://registry.terraform.io/browse/providers
@@ -72,7 +102,8 @@ https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/fi
 2. terraform plan - Creates the execution plan
 3. terraform apply - Executes the configuration resources
 4. terraform show - Show the resource details by inspecting state file
-5. 
+5. terraform destroy - Deletes the all the resource in the current configuration
 6. 
+7. 
 
 
