@@ -36,4 +36,19 @@
 Providers is a plugin that enables intraction with an APIs. These includes cloud providers and SaaS providers. The providers are specified in terraform configuration files. They tell Terraform which services it need to intract with.
 
 
+### What does Declarative code means?
+The code we define is the state we want our infrastrure to be in, that's the desire state. 
+Terraform will take care of from current state to desire state. 
+
+This is achieved in 3 state,
+- Init
+    This phase terraform initialise the projects and identifies the providers to be used for the target environment
+- Plan
+    This phase terraform draws the plan to get the target state
+- Apply
+    This phase terraform makes the necessary changes required on the target environment to bring it to the desire state 
+
+### Hashicorp Configuration Language(HCL) configuration file resources
+![Screenshot 2022-11-19 at 10 04 29](https://user-images.githubusercontent.com/20988358/202834231-47137da1-ce99-410c-8777-5a83c95c20be.png)
+
 
