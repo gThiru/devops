@@ -68,9 +68,10 @@ This is achieved in 3 state,
 ### Hashicorp Configuration Language(HCL) configuration file resources
 ![Screenshot 2022-11-19 at 10 04 29](https://user-images.githubusercontent.com/20988358/202834231-47137da1-ce99-410c-8777-5a83c95c20be.png)
 
-### Block Names
-* resource 
-* variable
+### Providers documentation
+https://registry.terraform.io/browse/providers
+### local_file documentation example
+https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file
 
 ## Variables
 Terraform follows many ways to declare and reuse of variables.
@@ -144,11 +145,69 @@ resource "local_file" "carMaker"{
      }) 
 - tuple - tuple([string, number, bool]) ==> [cat, 5, true]- Different type of variable can be combined together and it only accepts specified number of elements and same data type
 
+### Resource Dependencies
+There are 2 types of dependencies,  
+1. Implicit dependencies
+2. Explicit dependencies
 
-### Providers documentation
-https://registry.terraform.io/browse/providers
-### local_file documentation example
-https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file
+```
+main.tf:
+
+resource "local_file" "pet"{
+  filename = var.filename
+  content = "My favorite pet is Cat"
+}
+
+resource "random_pet" "my-pet"{
+  prefix = var.prefix
+  separator = var.separator
+  length = var.length
+}
+```
+**Implicit dependencies**
+```
+  content = "My favorite pet is ${random_pet.my-pet.id}"
+```
+===> ${random_pet.my-pet.id} -- it's called as a variable interpolation because of this reference terraform automatically creates the dependency with *my-pet* resource so order of creations,  
+- First creates *my-pet*
+- Then creates *pet*
+
+But incasse of deletion it does in opposite direction 
+- First deletes *pet*
+- Then deletes *my-pet*
+
+**Explicit dependencies**
+```
+  content = "My favorite pet is Cat"
+  depends_on = [
+    random_pet.my-pet
+  ]
+```
+
+### Output variables
+Syntax format
+
+```terraform
+output "out_ref_name"{
+  value = random_pet.my-pet.id # Mandatory field
+  description = "My pet value" # Optional
+}
+```
+
+Example of command output
+```terraform
+# Prints all the output values from the all configuration files in the current directory
+terraform output
+# Specific to a one variable
+terraform output out_ref_name
+```
+
+### Block Names
+* resource 
+* variable
+* output
+
+
 
 ## Terraform commands
 1. terraform init - Initialise the configuration
@@ -156,7 +215,8 @@ https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/fi
 3. terraform apply - Executes the configuration resources
 4. terraform show - Show the resource details by inspecting state file
 5. terraform destroy - Deletes the all the resource in the current configuration
-6. 
-7. 
+6. terraform output - Prints all the output values from the all configuration files in the current directory
+7. terraform output *varibale name* - Specific to a one ouput variable
+8. 
 
 
