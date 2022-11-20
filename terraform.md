@@ -71,6 +71,10 @@ This is achieved in 3 state,
 ### Block Names
 * resource 
 * variable
+
+## Variables
+Terraform follows many ways to declare and reuse of variables.
+Example:
 ```terraform
 Block example: variables.tf
 variable "fruit" {
@@ -84,6 +88,35 @@ Usage example: in main configuration file
 fruitName = var.fruit  # gets the default value(apple)
 fruitTaste = var.fruit.taste # gets the 'sweet'
 ```
+#### Ways of variable declaration methods, order of loading variable and precedence 
+1. Environment variables --> export TF_VAR_carmodel="Rapid" -- reference this as *var.carmodel*
+2. filename.tfvars or filename.tfvars.json --> carmodel="Rapid"
+3. \*.auto.tfvars or \*.auto.tfvars.json(file name in alphabetical order) --> carmodel="Rapid"
+4. Command line args --> -var or -var-file 
+```terraform
+# Command line args
+terraform apply -var "carmodel=Rapid" -var "carcolor=Red"
+# Varibale files as a args
+terraform apply -var-file variables.tfvars
+```
+
+Variable loading and precedence goes top to bottom so Env vars loads first and ends with cmd line args and if the same variable used everywhere then command line value taken into the execution
+
+#### How to pass keyboard inputs?
+```terraform
+variables.tf:
+
+variable "car" {
+      # Empty declarations makes program to ask the input while running
+}
+
+main.tf:
+
+resource "local_file" "carMaker"{
+  carModel = var.car # Which will prompt while executing because variable definition is blank in variable.tf file
+}
+```
+
 #### Variable types
 - string -- Alpha characters(a-z0-9) 
 - number -- 123
