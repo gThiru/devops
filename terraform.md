@@ -201,6 +201,9 @@ terraform output
 # Specific to a one variable
 terraform output out_ref_name
 ```
+#### Where we going to use of output variables
+1. When you want to quickly display all the created resource
+2. To feed an input to other configuration management tools such as Ansible and Shell scripts
 
 ### Block Names
 * resource 
