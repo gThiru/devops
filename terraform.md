@@ -84,13 +84,33 @@ Usage example: in main configuration file
 fruitName = var.fruit  # gets the default value(apple)
 fruitTaste = var.fruit.taste # gets the 'sweet'
 ```
-Variable types
-```
-    
-    
-    
-`
- * 
+#### Variable types
+- string -- Alpha characters(a-z0-9) 
+- number -- 123
+- bool -- true / false
+- any -- any values / default value
+- list -- ["a","b","c"] -- index starts with 0 --> var.variable[0]
+    - List of type  
+    type = list(string) ==> Accepts only strings -- ["a","b"]  
+    type = list(number) ==> Accepts only numbers -- [1,2,3]  
+- map -- key value pairs -- fruit = {"color" = "red", "taste" = "sweet"} --> var.fruit["color"]
+    - map types
+      type = map(string) ==> Accepts values only string -- fruit = {"color" = "red", "taste" = "sweet"}
+      type = map(number) ==> Accepts values only number -- fruit = {"count" = 100, "types" = 5}
+- set -- [1,2,3] -- set is similar to list but it will not accept the duplicate entries like [1,2,3,3] <== wrong declaration  
+    - map of type  
+    type = map(string) ==> Accepts only strings -- ["a","b"]  
+    type = map(number) ==> Accepts only numbers -- [1,2,3] 
+- objects -- Can be used to create a complex variable structure by combining all above variable types
+    - Example:
+     type = object({
+      name = string
+      colors = list
+      count = number
+      is_it_favorite = bool
+     }) 
+- tuple - tuple([string, number, bool]) ==> [cat, 5, true]- Different type of variable can be combined together and it only accepts specified number of elements and same data type
+
 
 ### Providers documentation
 https://registry.terraform.io/browse/providers
