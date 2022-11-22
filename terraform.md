@@ -183,7 +183,10 @@ But incasse of deletion it does in opposite direction
     random_pet.my-pet
   ]
 ```
+### Terraform State files
+State file created only when *terraform apply* command executed. It stores the all the resource state and meta data information in it. It used to reference and commpare the running environment state vs applying new changes so based on the result it takes the actions like, applying new changes and creating a new ID and updating the same in state file, deleting the resources incase user deleted from source definition file, and finally it avoids the referencing in every terraform command to the resource providers and improves the performance.  
 
+Terraform state file is the single source of truth what is applied on the real world environment.
 ### Output variables
 Syntax format
 
@@ -205,6 +208,21 @@ terraform output out_ref_name
 1. When you want to quickly display all the created resource
 2. To feed an input to other configuration management tools such as Ansible and Shell scripts
 
+## Terraform Lifecycle rules
+Lifecycle rule is applied within the resource block itself
+
+```terraform
+resource "local_file" "myfile"{
+  filename = "somefile"
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+```
+1. *create_before_destroy = true* -> When there is a change in configuration file, terraform destryies the resource first and creates a new one so this rule will prevent the same and allows to create first and delete it
+2. *prevent_destroy = true* - This will not allow to remove a resource even after creating it
+3. *ignore_changes = [ tags, filename]* or *ignore_changes = all* - This will ignore applying the changes made outside of terraform on specified tags or all tags
+
 ### Block Names
 * resource 
 * variable
@@ -217,9 +235,32 @@ terraform output out_ref_name
 2. terraform plan - Creates the execution plan
 3. terraform apply - Executes the configuration resources
 4. terraform show - Show the resource details by inspecting state file
-5. terraform destroy - Deletes the all the resource in the current configuration
-6. terraform output - Prints all the output values from the all configuration files in the current directory
-7. terraform output *varibale name* - Specific to a one ouput variable
-8. 
+5. terraform show -json - shows output in json format
+6. terraform destroy - Deletes the all the resource in the current configuration
+7. terraform output - Prints all the output values from the all configuration files in the current directory
+8. terraform output *varibale name* - Specific to a one ouput variable
+9. terraform plan --referesh=false - which will not refresh the state file instead it will use the local cache file to do the comparissions
+10. terraform validate - To validate the configuration files
+11. terraform fmt - Formates the configuration file as per the standard
+12. terraform providers - To get all the providers used in the configurations
+13. terraform providers mirror /path/to/the/new/location - this will copy all the providers to the new directory
+14. terraform refresh - To sync with real world infrastructure, if any manual update made in infrastructure outside of terraform commands this will bring update the stat files
+15. terraform graph - Graph for dependency and execution plan. Hard to see the graph in cmd prompt so install *graphviz* to see in visual using a *dot* command
+16. terraform graph | dot -Tsvg > graph.svg  - which will create a visual graph of dependencies 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
