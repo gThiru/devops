@@ -223,10 +223,96 @@ resource "local_file" "myfile"{
 2. *prevent_destroy = true* - This will not allow to remove a resource even after creating it
 3. *ignore_changes = [ tags, filename]* or *ignore_changes = all* - This will ignore applying the changes made outside of terraform on specified tags or all tags
 
+## Data Sources
+Data source can be provissioned outside of the terraform controls such as creating a file manually, script or creating a database manually and accessing them using data block.  
+
+- Data block is similar to the *resource* block.  
+- Here we are used *local_file* resource but it can be any valid terraform supported resource can be used to refer it.  
+- Content can be reffered using the data keyword and mandatory fields for each resource can be refered in documentation.  
+- Data resource can be used only for a read purpose.
+
+```terraform
+resource "local_file" "pet"{
+  filename = var.filename
+  content = data.local_file.dog.content # Data read from dog file
+}
+
+data "local_file" "dog" {
+  filename = "/root/dog.txt"
+}
+```
+## Loops
+Two types of loop followed in terraform,
+1. count
+2. for-each
+
+### count
+Count is used to iterate with multiple items to loop it
+
+```terraform
+resource "local_file" "myfile" {
+  filename = var.filename
+  count = 3 # this will iterate 3 times of this block
+  # OR
+  filename = var.filename[count.index]
+  count = length(var.filename) # This will give a length of filenames 
+}
+
+# variables.tf
+variable "filename" {
+  default = [
+    "/root/dog.txt",
+    "/root/cat.txt",
+    "/root/hen.txt"
+  ]
+}
+```
+But *count* has a issue when we remove an element from list, like remove first element from list then other elements in list will be left shifted so when we hit the *terraform apply* command it will remove the third element(hen.txt) because as per the *count.index* 3rd element is not present so it destrying it, thats where *for-each* comes into the picture.  
+
+### for-each
+For-each solves the above indexing problem but it will not work in list function so you have to provide a map values to proceed
+
+```terraform
+resource "local_file" "myfile" {
+  filename = each.value
+  for_each = toset(var.filename) # This will give a key-value(map) output 
+}
+
+# variables.tf
+variable "filename" {
+  default = [
+    "/root/dog.txt",
+    "/root/cat.txt",
+    "/root/hen.txt"
+  ]
+}
+```
+## Terraform providers versions
+By default terraform downloads all providers in the latest version available so if you want to specify a specic version then we have to specify the same. 
+
+At the top of the configuration file you have to specify the versions requirements
+
+```terraform
+terraform {
+  required_providers {
+    local = {
+      source = "hashicorp/local"
+      version = "1.4.0" # specific version
+      version = "> 1.4.0" # Greater then this version
+      version = "!= 1.4.0" # Except this version
+      version = "> 1.2.0, < 2.0.0, != 1.4.0" # This is enforces greater then 1.2.0 and less than 2.0.0 and not the 1.4.0
+      version = "~> 1.2" # Which will download anything greater then 1.3, 1.4, 1.5, etc,.
+      version = "~> 1.2.0" # Which will download anything greater then 1.2.1, 1.2.2, 1.2.3, ... 1.2.9
+    }
+  }
+}
+```
+
 ### Block Names
 * resource 
 * variable
 * output
+* data
 
 
 
