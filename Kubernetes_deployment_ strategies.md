@@ -78,4 +78,7 @@ spec:
             periodSeconds: 5 # Probe timeout period, after specified number of seconds the probe will result a success or failure bease on the application response
 ```
 
+### BlueGreen 
+This deployment implemented by considering existing implementation is a Blue deployment and new deploymnet is a Green deployment.  
+So when X version is 
 
