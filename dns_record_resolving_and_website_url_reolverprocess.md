@@ -10,3 +10,4 @@
 11. The .COM server then looks for the Name Server and then NS finds the IP of the destination server
 
 Reference document link: https://howdns.works/ep1/
+Another reference : https://www.verisign.com/en_US/website-presence/online/how-dns-works/index.xhtml?loc=en_US
