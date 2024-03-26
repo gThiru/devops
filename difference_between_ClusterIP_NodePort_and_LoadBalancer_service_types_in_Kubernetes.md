@@ -67,3 +67,7 @@ Well similarly:
 A ClusterIP Service is part of a NodePort Service. A NodePort Service is Part of a Load Balancer Service.
 
 In that diagram you showed, the Client would be a pod inside the cluster.
+
+![Screenshot 2024-03-26 at 13 59 23](https://github.com/gThiru/devops/assets/20988358/d1179b45-4f39-4c17-bac8-a674ffedc627)
+
+
