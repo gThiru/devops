@@ -1,5 +1,8 @@
 ## Difference between ClusterIP, NodePort and LoadBalancer service types in Kubernetes?
 
+![image](https://github.com/gThiru/devops/assets/20988358/c7042787-49ea-4959-ab28-d94286e07ebc)
+
+
 **A ClusterIP exposes the following:**
 
 ``spec.clusterIp:spec.ports[\*].port``
